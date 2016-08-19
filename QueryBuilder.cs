@@ -16,26 +16,77 @@ namespace FinalLab
         {
             _connector = new DatabaseConnector();
         }
-        /*
-        private void PerformQuery2(string queryString)
-        {
-            DatabaseContext
 
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            adapter.SelectCommand = new MySqlCommand(queryString, _connector.Connection);
-            _connector.ConnectToDatabase();
-            //
-            _connector.DisconnectFromDatabase();
-        }
-        */
-        private void PerformQuery(string queryString) // TODO: use LINQ
+        public MySqlConnection Connection { get { return _connector.Connection; } }
+
+        private void PerformQuery(MySqlCommand sqlCmd)
         {
-            
+            _connector.ConnectToDatabase();
+            using (MySqlTransaction transaction = Connection.BeginTransaction())
+            {
+                try
+                {
+                    sqlCmd.Connection = _connector.Connection;
+                    sqlCmd.ExecuteNonQuery(); // async
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    _connector.DisconnectFromDatabase();
+                }
+            }
         }
+
+        public void InsertItem(Item item, Chain chain)
+        {
+            try
+            {
+                string queryString = "INSERT INTO `database`.items (item_type,item_code,chain_id) VALUES (@itemType,@itemCode,@chainId)";
+                MySqlCommand sqlCmd = new MySqlCommand(queryString, Connection);
+                sqlCmd.Parameters.AddWithValue("@itemType", item.ItemType);
+                sqlCmd.Parameters.AddWithValue("@itemCode", item.ItemCode);
+                sqlCmd.Parameters.AddWithValue("@chainId", chain.ChainId);
+                PerformQuery(sqlCmd);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void InsertItemMeta(Item item, Chain chain)
+        {
+
+        }
+
+        public void InsertStoreOfChain(Chain chain)
+        {
+            try
+            {
+                string queryString = "INSERT INTO `database`.stores (store_id,chain_id,subchain_id) VALUES (@storeId,@chainId,@subchainId)";
+                MySqlCommand sqlCmd = new MySqlCommand(queryString, Connection);
+                sqlCmd.Parameters.AddWithValue("@storeId", chain.StoreId);
+                sqlCmd.Parameters.AddWithValue("@chainId", chain.ChainId);
+                sqlCmd.Parameters.AddWithValue("@subchainId", chain.SubChainId);
+                PerformQuery(sqlCmd);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
 
         public void AddChainDetailsByObject(Chain chain)
         {
-           // DbContext context=new DbContext
+            // DbContext context=new DbContext
         }
         /*
         public Item GetItemByCode(string itemCode)
