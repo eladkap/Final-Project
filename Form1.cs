@@ -26,11 +26,12 @@ namespace FinalLab
             }
         }
 
+        /*
         private void ShowChainDetailsAndItems(Chain chain)
         {
             listbox_chain.Items.Clear();
             listbox_chain.Items.Add(chain.ChainId);
-            listbox_chain.Items.Add(chain.SubChainId);
+            listbox_chain.Items.Add(chain.SubchainId);
             listbox_chain.Items.Add(chain.StoreId);
             listbox_chain.Items.Add(chain.DllVerNo);
             listbox_chain.Items.Add(chain.BikoretNo.ToString());
@@ -42,14 +43,16 @@ namespace FinalLab
             }
             txt_itemsNum.Text = listbox_items.Items.Count.ToString();
         }
+        */
 
         private void btn_testXml_Click(object sender, EventArgs e)
         {
             XmlDecoder xmlDecoder = new XmlDecoder();
             Chain chain = xmlDecoder.DeserializeChain(@"D:\files\Prices\Price7290027600007-001-201607262230\Price7290027600007-001-201607262230.xml");
-            ShowChainDetailsAndItems(chain);
+            //ShowChainDetailsAndItems(chain);
         }
 
+        /*
         /// <summary>
         /// Insert chain details into all relevant tables: items, stores, etc...
         /// </summary>
@@ -72,7 +75,10 @@ namespace FinalLab
                 MessageBox.Show("Error: Database is down.", "Database error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        */
 
+
+            /*
         /// <summary>
         /// 
         /// </summary>
@@ -96,11 +102,25 @@ namespace FinalLab
                 }
             }
         }
-
+    */
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateCatalog(Constants.XmlPricesDirPath, Constants.XmlFilesNumber);
+         //   UpdateCatalog(Constants.XmlPricesDirPath, Constants.XmlFilesNumber);
             MessageBox.Show("Catalog was updated successfully.", "Update catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            QueryBuilder queryBuilder = new QueryBuilder();
+            queryBuilder.InsertChain();
+            MessageBox.Show("Chain inserted.");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            QueryBuilder queryBuilder = new QueryBuilder();
+            queryBuilder.InsertStore();
+            MessageBox.Show("Store inserted.");
         }
     }
 }

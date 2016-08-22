@@ -4,65 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalLab
 {
-    [XmlRoot("Item")]
+    [Table("items")]
     public class Item
     {
-
-        [XmlElement("PriceUpdateDate")]
-        public string PriceUpdateDate { get; set; }
-
-        [XmlElement("ItemCode")]
+        [Key]
+        [Column("item_code")]
         public string ItemCode { get; set; }
 
-        [XmlElement("ItemType")]
+        [Column("item_type")]
         public int ItemType { get; set; }
 
-        [XmlElement("ItemName")]
+        [Column("item_name")]
         public string ItemName { get; set; }
 
-        [XmlElement("ManufacturerName")]
+        [Column("manufacturer_name")]
         public string ManufacturerName { get; set; }
 
-        [XmlElement("ManufactureCountry")]
-        public string ManufactureCountry { get; set; }
+        [Column("manufacturer_country")]
+        public string ManufacturerCountry { get; set; }
 
-        [XmlElement("ManufacturerItemDescription")]
+        [Column("manufacturer_item_description")]
         public string ManufacturerItemDescription { get; set; }
 
-        [XmlElement("UnitQty")]
+        [Column("unit_quantity")]
         public string UnitQty { get; set; }
 
-        [XmlElement("Quantity")]
+        [Column("quantity")]
         public double Quantity { get; set; }
 
-        [XmlElement("bIsWeighted")]
+        [Column("is_weighted")]
         public bool bIsWeighted { get; set; }
 
-        [XmlElement("UnitOfMeasure")]
+        [Column("unit_of_measure")]
         public string UnitOfMeasure { get; set; }
 
-        [XmlElement("QtyInPackage")]
+        [Column("quantity_in_package")]
         public int QtyInPackage { get; set; }
 
-        [XmlElement("ItemPrice")]
-        public double ItemPrice { get; set; }
-
-        [XmlElement("UnitOfMeasurePrice")]
-        public double UnitOfMeasurePrice { get; set; }
-
-        [XmlElement("AllowDiscount")]
-        public bool AllowDiscount { get; set; }
-
-        [XmlElement("ItemStatus")]
-        public int ItemStatus { get; set; }
-
-        public override string ToString()
-        {
-            return $"[{PriceUpdateDate},{ItemCode},{ItemType},{ItemName},{ManufacturerName},{ManufactureCountry},{ManufacturerItemDescription},{Quantity},{ItemPrice},{ItemStatus}]";
-        }
-
+        public virtual List<Price> Prices { get; set; }
     }
 }

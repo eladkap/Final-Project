@@ -1,39 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
+
 namespace FinalLab
 {
-    [XmlRoot("root")]
+    [Table("chains")]
     public class Chain
     {
-        [XmlElement("ChainId")]
+        [Key]
+        [Column("chain_id")]
         public string ChainId { get; set; }
 
-        [XmlElement("SubChainId")]
-        public string SubChainId { get; set; }
+        [Column("chain_name")]
+        public string ChainName { get; set; }
 
-        [XmlElement("StoreId")]
-        public string StoreId { get; set; }
+        [Column("chain_name_hebrew")]
+        public string ChainNameHebrew { get; set; }
 
-        [XmlElement("BikoretNo")]
-        public int BikoretNo { get; set; }
-
-        [XmlElement("DllVerNo")]
-        public string DllVerNo { get; set; }
-
-        [XmlArray("Items")]
-        public Item[] Items { get; set; }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{ChainId}, {SubChainId}, {StoreId},");
-            Items.ToList().ForEach((item) => sb.AppendLine($"\t{item.ToString()}\n"));
-            return sb.ToString();
-        }
+        public virtual List<Subchain> Subchain { get; set; }
     }
 }

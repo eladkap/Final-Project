@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace FinalLab
 {
@@ -17,12 +17,12 @@ namespace FinalLab
             _connector = new DatabaseConnector();
         }
 
-        public MySqlConnection Connection { get { return _connector.Connection; } }
+        public SqlConnection Connection { get { return _connector.Connection; } }
 
-        private void PerformQuery(MySqlCommand sqlCmd)
+        private void PerformQuery(SqlCommand sqlCmd)
         {
             _connector.ConnectToDatabase();
-            using (MySqlTransaction transaction = Connection.BeginTransaction())
+            using (SqlTransaction transaction = Connection.BeginTransaction())
             {
                 try
                 {
@@ -47,11 +47,21 @@ namespace FinalLab
         {
             try
             {
-                string queryString = "INSERT INTO `database`.items (item_type,item_code,chain_id) VALUES (@itemType,@itemCode,@chainId)";
-                MySqlCommand sqlCmd = new MySqlCommand(queryString, Connection);
-                sqlCmd.Parameters.AddWithValue("@itemType", item.ItemType);
-                sqlCmd.Parameters.AddWithValue("@itemCode", item.ItemCode);
-                sqlCmd.Parameters.AddWithValue("@chainId", chain.ChainId);
+                string insertString = "INSERT INTO `db`.items (item_code,item_type,item_name,manufacturer_name,manufacturer_country,manufacturer_item_description,unit_quantity,quantity,is_weighted,unit_of_measure,quantity_in_package) ";
+                string valuesString = "VALUES (@item_code,@item_type,@item_name,@manufacturer_name,@manufacturer_country,@manufacturer_item_description,@unit_quantity,@quantity,@is_weighted,@unit_of_measure,@quantity_in_package)";
+                string queryString = insertString + valuesString;
+                SqlCommand sqlCmd = new SqlCommand(queryString, Connection);
+                sqlCmd.Parameters.AddWithValue("@item_code", item.ItemCode);
+                sqlCmd.Parameters.AddWithValue("@item_type", item.ItemType);
+                sqlCmd.Parameters.AddWithValue("@item_name", item.ItemName);
+                sqlCmd.Parameters.AddWithValue("@manufacturer_name", item.ManufacturerName);
+                sqlCmd.Parameters.AddWithValue("@manufacturer_country", item.ManufacturerCountry);
+                sqlCmd.Parameters.AddWithValue("@manufacturer_item_description", item.ManufacturerItemDescription);
+                sqlCmd.Parameters.AddWithValue("@unit_quantity", item.UnitQty);
+                sqlCmd.Parameters.AddWithValue("@quantity", item.Quantity);
+                sqlCmd.Parameters.AddWithValue("@is_weighted", item.bIsWeighted);
+                sqlCmd.Parameters.AddWithValue("@unit_of_measure", item.UnitOfMeasure);
+                sqlCmd.Parameters.AddWithValue("@quantity_in_package", item.QtyInPackage);
                 PerformQuery(sqlCmd);
             }
             catch (Exception e)
@@ -60,28 +70,58 @@ namespace FinalLab
             }
         }
 
-        public void InsertItemMeta(Item item, Chain chain)
+        public void InsertPrice(Item item, Chain chain)
         {
-
-        }
-
-        public void InsertStoreOfChain(Chain chain)
-        {
-            try
+            using (CatalogContext context = new CatalogContext())
             {
-                string queryString = "INSERT INTO `database`.stores (store_id,chain_id,subchain_id) VALUES (@storeId,@chainId,@subchainId)";
-                MySqlCommand sqlCmd = new MySqlCommand(queryString, Connection);
-                sqlCmd.Parameters.AddWithValue("@storeId", chain.StoreId);
-                sqlCmd.Parameters.AddWithValue("@chainId", chain.ChainId);
-                sqlCmd.Parameters.AddWithValue("@subchainId", chain.SubChainId);
-                PerformQuery(sqlCmd);
-            }
-            catch (Exception e)
-            {
-                throw e;
+                //context.
             }
         }
 
+        public void InsertStore()
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                Chain chain = new Chain
+                {
+                    ChainId = "12345678",
+                    ChainName = "SomeChain",
+                    ChainNameHebrew = "sommmechain"
+                };
+                Subchain subchain = new Subchain
+                {
+                    SubchainId = "1",
+                    SubchainName = "Shufersal Deal",
+                };
+                Store store = new Store()
+                {
+                    ChainId = chain.ChainId,
+                    SubchainId = subchain.SubchainId,
+                    StoreId = 121,
+                    Address = "Herzel 12",
+                    City = "Nahariya",
+                    Zipcode = "324657",
+                    BikoretNo = 3
+                };
+                context.Stores.Add(store);
+                context.SaveChanges();
+            }
+        }
+
+        public void InsertChain()
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                Chain chain = new Chain
+                {
+                    ChainId = "12345678",
+                    ChainName = "SomeChain",
+                    ChainNameHebrew = "sommmechain"
+                };
+                context.Chains.Add(chain);
+                context.SaveChanges();
+            }
+        }
 
 
         public void AddChainDetailsByObject(Chain chain)

@@ -41,6 +41,8 @@
             this.listbox_items = new System.Windows.Forms.ListBox();
             this.listbox_chain = new System.Windows.Forms.ListBox();
             this.txt_itemsNum = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +68,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -81,7 +83,7 @@
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.updateToolStripMenuItem.Text = "Update";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
@@ -141,11 +143,33 @@
             this.txt_itemsNum.Size = new System.Drawing.Size(100, 20);
             this.txt_itemsNum.TabIndex = 5;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(830, 208);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(101, 54);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Add chain test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(830, 302);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(101, 54);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Add strore test";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(960, 417);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.txt_itemsNum);
             this.Controls.Add(this.listbox_chain);
             this.Controls.Add(this.listbox_items);
@@ -177,6 +201,8 @@
         private System.Windows.Forms.TextBox txt_itemsNum;
         private System.Windows.Forms.ToolStripMenuItem catalogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

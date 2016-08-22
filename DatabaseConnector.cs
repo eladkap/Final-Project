@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+using System.Data.Sql;
+using System.Data.SqlClient;
 
 namespace FinalLab
 {
     public class DatabaseConnector
     {
-        private MySqlConnection _connection;
+        private SqlConnection _connection;
         public void ConnectToDatabase()
         {
             try
             {
-                string connectionString = "datasource=localhost;port=3306;username=root;password=root";
-                _connection = new MySqlConnection(connectionString);
+                string connectionString = @"Server=localhost\SQLEXPRESS;Database=master;Trusted_Connection=True";
+                _connection = new SqlConnection(connectionString);
                 _connection.Open(); // OpenAsync
             }
             catch (Exception e)
@@ -30,6 +31,6 @@ namespace FinalLab
             _connection?.Close();
         }
 
-        public MySqlConnection Connection { get { return _connection; } }
+        public SqlConnection Connection { get { return _connection; } }
     }
 }
